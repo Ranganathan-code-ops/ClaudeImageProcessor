@@ -9,6 +9,7 @@ public partial class MainForm : Form
     private readonly ImageService _imageService;
     private readonly PdfExportService _pdfExportService;
     private readonly PdfRenderService _pdfRenderService;
+    private readonly ImageValidationService _validationService;
     private static readonly HttpClient _httpClient;
 
     static MainForm()
@@ -27,6 +28,7 @@ public partial class MainForm : Form
         _imageService = new ImageService();
         _pdfExportService = new PdfExportService();
         _pdfRenderService = new PdfRenderService();
+        _validationService = new ImageValidationService();
         _previewForm = new ImagePreviewForm();
 
         // Add mouse hover events for image preview
@@ -62,6 +64,7 @@ public partial class MainForm : Form
             UpdatePreview();
             UpdateImageInfo();
             EnableControls(true);
+            ValidateAndDisplayResults(filePath);
 
             lblFileName.Text = Path.GetFileName(filePath);
         }
@@ -271,6 +274,74 @@ public partial class MainForm : Form
         {
             lblImageInfo.Text = "";
         }
+    }
+
+    private void ValidateAndDisplayResults(string filePath)
+    {
+        try
+        {
+            var fileInfo = new FileInfo(filePath);
+            var result = _validationService.Validate(
+                _imageService.Width,
+                _imageService.Height,
+                fileInfo.Length
+            );
+
+            // Update Resolution status
+            lblResolutionStatus.Text = $"Resolution: {result.ResolutionMessage}";
+            lblResolutionStatus.ForeColor = GetQualityColor(result.ResolutionQuality);
+
+            // Update Aspect Ratio status
+            lblAspectRatioStatus.Text = $"Ratio: {result.AspectRatioMessage}";
+            lblAspectRatioStatus.ForeColor = GetQualityColor(result.AspectRatioQuality);
+
+            // Update File Size status
+            lblFileSizeStatus.Text = $"Size: {result.FileSizeMessage}";
+            lblFileSizeStatus.ForeColor = GetQualityColor(result.FileSizeQuality);
+
+            // Update Overall status
+            lblOverallStatus.Text = result.OverallMessage;
+            lblOverallStatus.ForeColor = GetQualityColor(result.OverallQuality);
+            lblOverallStatus.BackColor = GetQualityBackColor(result.OverallQuality);
+        }
+        catch
+        {
+            ClearValidationDisplay();
+        }
+    }
+
+    private void ClearValidationDisplay()
+    {
+        lblResolutionStatus.Text = "Resolution: --";
+        lblResolutionStatus.ForeColor = SystemColors.ControlText;
+        lblAspectRatioStatus.Text = "Aspect Ratio: --";
+        lblAspectRatioStatus.ForeColor = SystemColors.ControlText;
+        lblFileSizeStatus.Text = "File Size: --";
+        lblFileSizeStatus.ForeColor = SystemColors.ControlText;
+        lblOverallStatus.Text = "";
+        lblOverallStatus.BackColor = Color.Transparent;
+    }
+
+    private static Color GetQualityColor(QualityLevel quality)
+    {
+        return quality switch
+        {
+            QualityLevel.Good => Color.FromArgb(0, 128, 0),       // Dark Green
+            QualityLevel.Acceptable => Color.FromArgb(200, 130, 0), // Orange
+            QualityLevel.Poor => Color.FromArgb(180, 0, 0),       // Dark Red
+            _ => SystemColors.ControlText
+        };
+    }
+
+    private static Color GetQualityBackColor(QualityLevel quality)
+    {
+        return quality switch
+        {
+            QualityLevel.Good => Color.FromArgb(200, 255, 200),     // Light Green
+            QualityLevel.Acceptable => Color.FromArgb(255, 240, 200), // Light Orange
+            QualityLevel.Poor => Color.FromArgb(255, 200, 200),     // Light Red
+            _ => Color.Transparent
+        };
     }
 
     private void EnableControls(bool enabled)

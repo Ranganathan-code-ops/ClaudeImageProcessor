@@ -23,8 +23,16 @@ partial class MainForm
         this.mainTableLayout = new TableLayoutPanel();
         this.topPanel = new Panel();
         this.previewPanel = new Panel();
+        this.validationPanel = new Panel();
         this.settingsPanel = new Panel();
         this.buttonPanel = new Panel();
+
+        // Validation panel controls
+        this.lblValidationTitle = new Label();
+        this.lblResolutionStatus = new Label();
+        this.lblAspectRatioStatus = new Label();
+        this.lblFileSizeStatus = new Label();
+        this.lblOverallStatus = new Label();
 
         // Top panel controls
         this.btnOpen = new Button();
@@ -107,14 +115,16 @@ partial class MainForm
         this.mainTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
         this.mainTableLayout.Controls.Add(this.topPanel, 0, 0);
         this.mainTableLayout.Controls.Add(this.previewPanel, 0, 1);
-        this.mainTableLayout.Controls.Add(this.settingsPanel, 0, 2);
-        this.mainTableLayout.Controls.Add(this.buttonPanel, 0, 3);
+        this.mainTableLayout.Controls.Add(this.validationPanel, 0, 2);
+        this.mainTableLayout.Controls.Add(this.settingsPanel, 0, 3);
+        this.mainTableLayout.Controls.Add(this.buttonPanel, 0, 4);
         this.mainTableLayout.Dock = DockStyle.Fill;
         this.mainTableLayout.Location = new Point(0, 0);
         this.mainTableLayout.Name = "mainTableLayout";
-        this.mainTableLayout.RowCount = 4;
+        this.mainTableLayout.RowCount = 5;
         this.mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
         this.mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+        this.mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F));
         this.mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 150F));
         this.mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
         this.mainTableLayout.Size = new Size(900, 700);
@@ -202,6 +212,56 @@ partial class MainForm
         this.pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
         this.pictureBox.TabIndex = 0;
         this.pictureBox.TabStop = false;
+
+        // validationPanel
+        this.validationPanel.BackColor = SystemColors.ControlLight;
+        this.validationPanel.BorderStyle = BorderStyle.FixedSingle;
+        this.validationPanel.Controls.Add(this.lblValidationTitle);
+        this.validationPanel.Controls.Add(this.lblResolutionStatus);
+        this.validationPanel.Controls.Add(this.lblAspectRatioStatus);
+        this.validationPanel.Controls.Add(this.lblFileSizeStatus);
+        this.validationPanel.Controls.Add(this.lblOverallStatus);
+        this.validationPanel.Dock = DockStyle.Fill;
+        this.validationPanel.Name = "validationPanel";
+        this.validationPanel.Padding = new Padding(10, 5, 10, 5);
+        this.validationPanel.TabIndex = 2;
+
+        // lblValidationTitle
+        this.lblValidationTitle.AutoSize = true;
+        this.lblValidationTitle.Font = new Font(this.Font.FontFamily, 9F, FontStyle.Bold);
+        this.lblValidationTitle.Location = new Point(10, 8);
+        this.lblValidationTitle.Name = "lblValidationTitle";
+        this.lblValidationTitle.Size = new Size(120, 15);
+        this.lblValidationTitle.Text = "Image Validation:";
+
+        // lblResolutionStatus
+        this.lblResolutionStatus.AutoSize = true;
+        this.lblResolutionStatus.Location = new Point(10, 30);
+        this.lblResolutionStatus.Name = "lblResolutionStatus";
+        this.lblResolutionStatus.Size = new Size(200, 15);
+        this.lblResolutionStatus.Text = "Resolution: --";
+
+        // lblAspectRatioStatus
+        this.lblAspectRatioStatus.AutoSize = true;
+        this.lblAspectRatioStatus.Location = new Point(250, 30);
+        this.lblAspectRatioStatus.Name = "lblAspectRatioStatus";
+        this.lblAspectRatioStatus.Size = new Size(200, 15);
+        this.lblAspectRatioStatus.Text = "Aspect Ratio: --";
+
+        // lblFileSizeStatus
+        this.lblFileSizeStatus.AutoSize = true;
+        this.lblFileSizeStatus.Location = new Point(500, 30);
+        this.lblFileSizeStatus.Name = "lblFileSizeStatus";
+        this.lblFileSizeStatus.Size = new Size(150, 15);
+        this.lblFileSizeStatus.Text = "File Size: --";
+
+        // lblOverallStatus
+        this.lblOverallStatus.AutoSize = true;
+        this.lblOverallStatus.Font = new Font(this.Font.FontFamily, 10F, FontStyle.Bold);
+        this.lblOverallStatus.Location = new Point(700, 25);
+        this.lblOverallStatus.Name = "lblOverallStatus";
+        this.lblOverallStatus.Size = new Size(150, 20);
+        this.lblOverallStatus.Text = "";
 
         // settingsPanel
         this.settingsPanel.AutoScroll = true;
@@ -547,6 +607,8 @@ partial class MainForm
         this.topPanel.PerformLayout();
         this.previewPanel.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)this.pictureBox).EndInit();
+        this.validationPanel.ResumeLayout(false);
+        this.validationPanel.PerformLayout();
         this.settingsPanel.ResumeLayout(false);
         this.buttonPanel.ResumeLayout(false);
         this.grpResize.ResumeLayout(false);
@@ -572,8 +634,16 @@ partial class MainForm
     private TableLayoutPanel mainTableLayout;
     private Panel topPanel;
     private Panel previewPanel;
+    private Panel validationPanel;
     private Panel settingsPanel;
     private Panel buttonPanel;
+
+    // Validation labels
+    private Label lblValidationTitle;
+    private Label lblResolutionStatus;
+    private Label lblAspectRatioStatus;
+    private Label lblFileSizeStatus;
+    private Label lblOverallStatus;
     private Button btnOpen;
     private TextBox txtUrl;
     private Button btnLoadUrl;
