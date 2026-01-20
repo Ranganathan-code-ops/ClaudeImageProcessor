@@ -8,8 +8,8 @@ setlocal enabledelayedexpansion
 REM ============================================
 REM CONFIGURATION - Edit these settings
 REM ============================================
-set SSH_USER=administrator
-set SSH_HOST=YOUR_SERVER_IP
+set SSH_USER=ranganathan
+set SSH_HOST=10.10.30.51
 set SSH_PORT=22
 set REMOTE_PATH=/c/Deploy/ImageProcessor
 set LOCAL_PUBLISH_DIR=publish\win-x64
